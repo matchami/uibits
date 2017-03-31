@@ -38,6 +38,23 @@ import com.jumbletree.uibits.wizard.WizardPage;
 
 public class WizardDialog implements Wizard {
 
+	private static String finishLabel = "Finish";
+	private static String nextLabel = "Next >";
+	private static String previousLabel = "< Prev";
+	
+	//Global configuration
+	public static void setNextLabel(String label) {
+		nextLabel = label;
+	}
+	
+	public static void setPreviousLabel(String label) {
+		previousLabel = label;
+	}
+	
+	public static void setFinishLabel(String label) {
+		finishLabel = label;
+	}
+
 	public class TopPanelLayout implements LayoutManager {
 
 		@Override
@@ -160,9 +177,9 @@ public class WizardDialog implements Wizard {
 		buttonPanel.setBorder(BorderFactory.createCompoundBorder(Hr90Border.get(SwingConstants.TOP), BorderFactory.createEmptyBorder(7, 10, 7, 10)));
 
 		buttonPanel.add(Box.createHorizontalGlue());
-		buttonPanel.add(previousButton = new JButton("< Prev"));
+		buttonPanel.add(previousButton = new JButton(previousLabel));
 		buttonPanel.add(Box.createHorizontalStrut(5));
-		buttonPanel.add(nextButton = new JButton("Next >"));
+		buttonPanel.add(nextButton = new JButton(nextLabel));
 		buttonPanel.add(Box.createHorizontalStrut(15));
 		buttonPanel.add(cancelButton = new JButton("Cancel"));
 		
@@ -248,7 +265,7 @@ public class WizardDialog implements Wizard {
 		for (int i=pageIndex+1; !notFinished && i<pages.size(); i++)
 			notFinished |= pages.get(i).isUsable();
 		
-		nextButton.setText(notFinished ? "Next >" : "Finish");
+		nextButton.setText(notFinished ? nextLabel : finishLabel);
 		
 		WizardPage page = pages.get(pageIndex);
 		ConfigurationResult result = page.configureWizard(this, pageIndex > currentPage ? Direction.FORWARD : Direction.BACKWARD);
